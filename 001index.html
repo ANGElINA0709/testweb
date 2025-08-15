@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+<head >
+    <meta charset='UTF-8'/> <!-- 设置网页字符编码为UTF-8，确保中文正常显示 -->
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'/> <!-- 设置视口，确保移动端适配 -->
+    <title >小碗人间：当代中国年轻人的一人食</title> <!-- 网页标题 -->
+    <script src='https://res.gemcoder.com/js/reload.js'></script> <!-- 自动重载脚本 -->
+    <script src='https://cdn.tailwindcss.com'></script> <!-- 引入Tailwind CSS框架 -->
+    <link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/> <!-- 引入Font Awesome图标库 -->
+    <script src='https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js'></script> <!-- 引入ECharts图表库 -->
+    <script >
+        tailwind.config = { // 配置Tailwind CSS主题
+            theme: {
+                extend: {
+                    colors: { // 自定义颜色配置
+                        primary: '#FFC400', // 主色调：黄色
+                        success: '#52c41a', // 成功色：绿色
+                        warning: '#faad14', // 警告色：橙色
+                        error: '#ff4d4f', // 错误色：红色
+                        info: '#1677ff', // 信息色：蓝色
+                        textBase: '#000000', // 文本基础色：黑色
+                        bgBase: '#ffffff', // 背景基础色：白色
+                        warm: '#FF9E64', // 暖色：橙红色
+                        cold: '#6495ED', // 冷色：天蓝色
+                        neutral: '#F5F5F5' // 中性色：浅灰色
+                    },
+                    fontFamily: { // 字体配置
+                        sans: ['Inter', 'system-ui', 'sans-serif'] // 无衬线字体
+                    },
+                    boxShadow: { // 阴影配置
+                        primary: '0px 0px 10px 0px #E1E7F3', // 主要阴影
+                        secondary: '0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05)' // 次要阴影
+                    },
+                    borderRadius: { // 圆角配置
+                        base: '6px' // 基础圆角
+                    }
+                }
+            }
+        };
+    </script>
+    <style type='text/tailwindcss'>
+        @layer utilities {
+            /* 自定义Tailwind工具类 */
+            .content-auto {
+                /* 内容可见性优化 */
+                content-visibility: auto;
+            }
+            .text-shadow {
+                /* 文本阴影 */
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-transform-opacity {
+                /* 变换和透明度过渡 */
+                transition-property: transform, opacity;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                /* 隐藏滚动条 */
+                display: none;
+            }
+            .scrollbar-hide {
+                /* 隐藏滚动条（兼容其他浏览器） */
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .timeline-line {
+                /* 时间线中线样式 */
+                @apply absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-200 z-0;
+            }
+            .timeline-dot {
+                /* 时间线节点样式 */
+                @apply absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary z-10 border-4 border-white;
+            }
+            .audio-player-appear {
+                /* 音频播放器出现动画 */
+                @apply opacity-100 translate-y-0;
+            }
+            .audio-player-disappear {
+                /* 音频播放器消失动画 */
+                @apply opacity-0 translate-y-4;
+            }
+        }
+    </style>
+</head>
+<body class='bg-neutral font-sans text-textBase antialiased'> <!-- 页面主体，设置背景色、字体和抗锯齿 -->
+    <!-- 顶部导航栏 -->
+    <header class='fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm shadow-primary z-50 transition-all duration-300' id='main-header'> <!-- 固定在顶部的导航栏，半透明背景，毛玻璃效果 -->
+        <div class='container mx-auto px-4 sm:px-6 lg:px-8'> <!-- 容器，设置内边距 -->
+            <div class='flex justify-between items-center h-16 md:h-20'> <!-- 水平布局，两端对齐 -->
+                <div class='flex items-center'> <!-- 左侧Logo区域 -->
+                    <a href='#' class='flex items-center'> <!-- Logo链接 -->
+                        <i class='fas fa-utensils text-primary text-2xl mr-2'> <!-- 餐具图标 -->
+                        </i>
+                        <span class='text-xl font-bold text-gray-800'>
+                            小碗人间
+                        </span>
+                    </a>
+                </div>
+                <!-- 桌面导航 -->
+                <nav class='hidden md:flex space-x-8'> <!-- 桌面端导航菜单，隐藏在移动端 -->
+                    <a href='#intro' class='text-gray-700 hover:text-primary transition-colors duration-200 font-medium'>引子</a> <!-- 导航链接 -->
+                    <a href='#chapter1' class='text-gray-700 hover:text-primary transition-colors duration-200 font-medium'>第一章</a>
+                    <a href='#chapter2' class='text-gray-700 hover:text-primary transition-colors duration-200 font-medium'>第二章</a>
+                    <a href='#chapter3' class='text-gray-700 hover:text-primary transition-colors duration-200 font-medium'>第三章</a>
+                    <a href='#chapter4' class='text-gray-700 hover:text-primary transition-colors duration-200 font-medium'>第四章</a>
+                    <a href='#chapter5' class='text-gray-700 hover:text-primary transition-colors duration-200 font-medium'>第五章</a>
+                    <a href='#conclusion' class='text-gray-700 hover:text-primary transition-colors duration-200 font-medium'>结语</a>
+                </nav>
+                <!-- 移动端菜单按钮 -->
+                <button id='mobile-menu-button' class='md:hidden text-gray-700 hover:text-primary focus:outline-none'> <!-- 移动端菜单按钮 -->
+                    <i class='fas fa-bars text-xl'> <!-- 汉堡菜单图标 -->
+                    </i>
+                </button>
+            </div>
+        </div>
+        <!-- 移动端导航菜单 -->
+        <div id='mobile-menu' class='hidden md:hidden bg-white shadow-lg absolute w-full'> <!-- 移动端菜单，默认隐藏 -->
+            <div class='px-4 py-3 space-y-3'> <!-- 菜单内容区域 -->
+                <a href='#intro' class='block text-gray-700 hover:text-primary transition-colors duration-200 font-medium py-2'>引子</a>
+                <a href='#chapter1' class='block text-gray-700 hover:text-primary transition-colors duration-200 font-medium py-2'>第一章</a>
+                <a href='#chapter2' class='block text-gray-700 hover:text-primary transition-colors duration-200 font-medium py-2'>第二章</a>
+                <a href='#chapter3' class='block text-gray-700 hover:text-primary transition-colors duration-200 font-medium py-2'>第三章</a>
+                <a href='#chapter4' class='block text-gray-700 hover:text-primary transition-colors duration-200 font-medium py-2'>第四章</a>
+                <a href='#chapter5' class='block text-gray-700 hover:text-primary transition-colors duration-200 font-medium py-2'>第五章</a>
+                <a href='#conclusion' class='block text-gray-700 hover:text-primary transition-colors duration-200 font-medium py-2'>结语</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class='container mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-16'> <!-- 主内容区域，设置顶部内边距以避免被导航栏遮挡 -->
+        <div class='flex flex-col lg:flex-row gap-8'> <!-- 水平布局，在大屏幕上分为两列 -->
+            <!-- 主内容区 -->
+            <div class='lg:w-3/4'> <!-- 主内容区占3/4宽度 -->
+                <!-- 文章标题 -->
+                <div class='mb-12 text-center'> <!-- 标题区域，居中对齐 -->
+                    <h1 class='text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight'>小碗人间</h1> 
+                    <p class='text-xl md:text-2xl text-gray-600 italic'>当代中国年轻人的一人食</p> 
+                </div>
+
+                <!-- 封面图片 -->
+                <div class='mb-16 rounded-xl overflow-hidden shadow-secondary'> <!-- 封面图片容器 -->
+                    <img src='image/bg1.png' alt='一人食场景' class='w-full h-auto object-cover' loading='lazy'/> <!-- 封面图片，设置懒加载 -->
+                </div>
+
+                <!-- 引子部分 -->
+                <section id='intro' class='mb-20 scroll-mt-24'> <!-- 引子部分，设置滚动锚点 -->
+                    <div class='flex items-center mb-8'> <!-- 章节标题区域 -->
+                        <div class='w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-3'>
+                            <i class='fas fa-lightbulb'> <!-- 灯泡图标 -->
+                            </i>
+                        </div>
+                        <h2 class='text-3xl font-bold text-gray-900'>引子</h2> <!-- 章节标题 -->
+                    </div>
+
+                    <!-- 情景引入 -->
+                    <div class='mb-10'> <!-- 情景引入段落 -->
+                        <p class='text-xl leading-relaxed mb-6 text-center'>“一碗冒着热气的预制菜，一张安静到能听见筷子碰撞的餐桌。”</p>
+                        <p class='text-xl leading-relaxed mb-6 text-center'>当”一人食“成为都市常态，”三分钟即食“的便利背后，</p> 
+                        <p class='text-xl leading-relaxed mb-6 text-center'>是中国家庭餐桌正在经历的双重温度——饭是烫的，桌子是冷的。</p>
+                    </div>
+
+                    <!-- 背景数据 -->
+                    <div class='bg-white rounded-xl shadow-primary p-6 md:p-8 mb-10'> <!-- 背景数据卡片 -->
+                        <h3 class='text-xl font-semibold mb-4 text-gray-800'>背景数据</h3> <!-- 卡片标题 -->
+                        <p class='text-lg leading-relaxed mb-4'>据《中国统计年鉴2024》，2024年我国独居人口突破9000万；中国产业研究院的报告指出，自2015年起，预制菜行业便进入了高速发展阶段。2023年，我国预制菜市场规模已突破5400亿元。当“一个人吃饭”从偶然变成习惯，当“厨房烟火”被工业流水线取代，我们究竟在品尝效率，还是咀嚼孤独？</p>
+                        <div class='mt-6 grid grid-cols-1 md:grid-cols-2 gap-6'> <!-- 数据网格 -->
+                            <div class='bg-gray-50 p-5 rounded-lg'> <!-- 数据项 -->
+                                <div class='flex items-center mb-2'>
+                                    <i class='fas fa-users text-primary text-xl mr-3'> <!-- 用户图标 -->
+                                    </i>
+                                    <h4 class='font-semibold text-gray-800'>9200万+</h4> <!-- 数据值 -->
+                                </div>
+                                <p class='text-gray-600'>中国独居人口数量</p> <!-- 数据描述 -->
+                            </div>
+                            <div class='bg-gray-50 p-5 rounded-lg'> <!-- 数据项 -->
+                                <div class='flex items-center mb-2'>
+                                    <i class='fas fa-chart-line text-primary text-xl mr-3'> <!-- 图表图标 -->
+                                    </i>
+                                    <h4 class='font-semibold text-gray-800'>53%</h4> <!-- 数据值 -->
+                                </div>
+                                <p class='text-gray-600'>预制菜市场规模年增长率</p> <!-- 数据描述 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 视觉对比 -->
+                    <div class='mb-12'> <!-- 视觉对比区域 -->
+                        <h3 class='text-xl font-semibold mb-6 text-gray-800'>餐桌的温度变化</h3> <!-- 区域标题 -->
+                        <div class='grid grid-cols-1 md:grid-cols-2 gap-6'> <!-- 对比图片网格 -->
+                            <div class='rounded-xl overflow-hidden shadow-primary group relative'> <!-- 图片容器 -->
+                                <img src='image/E1.png' alt='家人围在餐桌上' class='w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105' loading='lazy'/> <!-- 图片，添加悬停缩放效果 -->
+                                <div class='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end'> <!-- 渐变遮罩 -->
+                                    <div class='p-4 text-white'> <!-- 图片文字说明 -->
+                                        <h4 class='font-semibold text-lg mb-1'>传统家庭聚餐</h4>
+                                        <p class='text-sm text-gray-200'>曾经的餐桌：热闹、团圆、共享</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='rounded-xl overflow-hidden shadow-primary group relative'> <!-- 图片容器 -->
+                                <img src='image/E2.png' alt='青年一个人吃饭' class='w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105' loading='lazy'/> <!-- 图片，添加悬停缩放效果 -->
+                                <div class='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end'> <!-- 渐变遮罩 -->
+                                    <div class='p-4 text-white'> <!-- 图片文字说明 -->
+                                        <h4 class='font-semibold text-lg mb-1'>现代一人食</h4>
+                                        <p class='text-sm text-gray-200'>现在的餐桌：安静、独立、便捷</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='mt-6 text-center'> <!-- 引用文字 -->
+                            <p class='text-gray-700 italic text-center'>中国人曾用“吃了吗”问候彼此，用圆桌维系亲情。</p>
+                            <p class='text-gray-700 italic text-center'>如今，预制菜解决了“吃什么”的难题，却回答不了“和谁吃”的失落。</p>
+                            <p class='text-gray-700 italic text-center'>当吃饭沦为纯功能行为，我们失去的仅仅是味道吗？</p>
+                        </div>
+                    </div>
+
+                    <!-- 餐桌温度测试 -->
+                    <div class='bg-white rounded-xl shadow-primary p-6 md:p-8'> <!-- 互动测试卡片 -->
+                        <h3 class='text-xl font-semibold mb-6 text-gray-800'>测测你的"餐桌温度"</h3> <!-- 卡片标题 -->
+                        <form id='dining-survey' class='space-y-6'> <!-- 表单 -->
+                            <div >
+                                <label for='dining-frequency' class='block text-gray-700 font-medium mb-2'>最近一周独自吃饭天数</label> <!-- 表单标签 -->
+                                <input type='number' id='dining-frequency' min='0' max='7' class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-200' placeholder='例如：5' required/> <!-- 输入框 -->
+                            </div>
+                            <div >
+                                <label for='prepackaged-percentage' class='block text-gray-700 font-medium mb-2'>冰箱里预制菜占比（粗略百分比）</label> <!-- 表单标签 -->
+                                <div class='flex items-center'> <!-- 带百分比符号的输入框 -->
+                                    <input type='number' id='prepackaged-percentage' min='0' max='100' class='w-full px-4 py-3 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-200' placeholder='例如：30' required/> <!-- 输入框 -->
+                                    <span class='bg-gray-100 px-4 py-3 border border-l-0 border-gray-300 rounded-r-lg text-gray-500'>%</span> <!-- 百分比符号 -->
+                                </div>
+                            </div>
+                            <div >
+                                <label for='family-dining-days' class='block text-gray-700 font-medium mb-2'>上次全家围坐用餐是几天前</label> <!-- 表单标签 -->
+                                <input type='number' id='family-dining-days' min='0' class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-200' placeholder='例如：7' required/> <!-- 输入框 -->
+                            </div>
+                            <button type='submit' class='w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center'> <!-- 提交按钮 -->
+                                <i class='fas fa-thermometer-half mr-2'> <!-- 温度计图标 -->
+                                </i>
+                                计算我的餐桌温度
+                            </button>
+                        </form>
+                        <!-- 结果显示区域 -->
+                        <div id='survey-result' class='mt-8 hidden'> <!-- 结果区域，默认隐藏 -->
+                            <div class='bg-gray-50 p-6 rounded-lg'> <!-- 结果卡片 -->
+                                <h4 class='text-xl font-semibold text-center mb-4' id='result-title'>你的餐桌温度：<span id='temperature-value'>温暖</span></h4> <!-- 结果标题 -->
+                                <p class='text-gray-700 text-center' id='result-description'>你的用餐习惯显示你保持着良好的社交连接，同时也享受个人空间。</p> <!-- 结果描述 -->
+                                <div class='mt-6 h-4 bg-gray-200 rounded-full overflow-hidden'> <!-- 进度条容器 -->
+                                    <div id='temperature-bar' class='h-full bg-gradient-to-r from-cold to-warm rounded-full' style='width: 65%'></div> <!-- 进度条 -->
+                                </div>
+                                <div class='flex justify-between text-xs text-gray-500 mt-2'> <!-- 进度条标签 -->
+                                    <span >疏离</span>
+                                    <span >平衡</span>
+                                    <span >温暖</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 第一章：从分到合再到分 -->
+                <section id='chapter1' class='mb-20 scroll-mt-24'> <!-- 第一章，设置滚动锚点 -->
+                    <div class='flex items-center mb-8'> <!-- 章节标题区域 -->
+                        <div class='w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-3'>1</div> <!-- 章节编号 -->
+                        <h2 class='text-3xl font-bold text-gray-900'>从分到合再到分</h2> <!-- 章节标题 -->
+                    </div>
+                    <p class='text-lg leading-relaxed mb-8 text-center'>餐桌上的千年轮回，展示中国饮食文化从分餐制到合餐制，</p>
+                    <p class='text-lg leading-relaxed mb-8 text-center'>再到现代分餐、公筷复兴，最后演变为一人食的历史变迁。</p>
+                    <p class='text-lg leading-relaxed mb-8 text-center'>这不仅是饮食方式的变化，更是社会结构与文化观念的折射。</p> <!-- 章节引言 -->
+
+                    <!-- 互动时间轴 -->
+                    <div class='relative py-16 mb-10'> <!-- 时间轴容器 -->
+                        <!-- 时间轴中线 -->
+                        <div class='timeline-line'></div> <!-- 使用自定义工具类的时间轴中线 -->
+
+                        <!-- 时间轴节点 -->
+                        <div class='relative z-10 space-y-16'> <!-- 时间轴节点容器 -->
+                            <!-- 先秦-五代：分餐 -->
+                            <div class='timeline-item'> <!-- 时间轴项 -->
+                                <div class='timeline-dot top-0'></div> <!-- 时间轴节点 -->
+                                <div class='flex flex-col md:flex-row items-center'> <!-- 内容布局 -->
+                                    <div class='md:w-1/2 md:pr-12 md:text-left order-2 md:order-1 mt-6 md:mt-0'> <!-- 文字内容 -->
+                                        <h3 class='text-xl font-bold text-gray-900 mb-2'>先秦 - 五代：分餐制</h3> <!-- 时间点标题 -->
+                                        <p class='text-gray-700 leading-relaxed'>中国早期实行分餐制，《周礼》中记载"设席之法，先设者皆言筵，后加者为席"，体现了严格的等级制度和卫生观念。考古发现的战国时期曾侯乙墓中的青铜甗、鼎等餐具，也印证了当时分餐而食的习惯。</p> <!-- 描述文字 -->
+                                    </div>
+                                    <div class='md:w-1/2 order-1 md:order-2'> <!-- 图片内容 -->
+                                        <div class='rounded-xl overflow-hidden shadow-primary transform transition-transform duration-500 hover:scale-[1.02]'> <!-- 图片容器 -->
+                                            <img src='image/history1.jpg' alt='先秦分餐制场景' class='w-full h-auto object-cover' loading='lazy'/> <!-- 图片 -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 宋代-现代：合餐制 -->
+                            <div class='timeline-item'> <!-- 时间轴项 -->
+                                <div class='timeline-dot top-0'></div> <!-- 时间轴节点 -->
+                                <div class='flex flex-col md:flex-row items-center'> <!-- 内容布局 -->
+                                    <div class='md:w-1/2'> <!-- 图片内容 -->
+                                        <div class='rounded-xl overflow-hidden shadow-primary transform transition-transform duration-500 hover:scale-[1.02]'> <!-- 图片容器 -->
+                                            <img src='image/history2.png' alt='宋代合餐制场景' class='w-full h-auto object-cover' loading='lazy'/> <!-- 图片 -->
+                                        </div>
+                                    </div>
+                                    <div class='md:w-1/2 md:pl-12 mt-6 md:mt-0'> <!-- 文字内容 -->
+                                        <h3 class='text-xl font-bold text-gray-900 mb-2'>宋代 - 现代：合餐制兴起</h3> <!-- 时间点标题 -->
+                                        <p class='text-gray-700 leading-relaxed'>宋代随着经济发展和市民文化兴起，合餐制逐渐出现。《东京梦华录》中记载了当时酒楼"八仙桌"的出现，象征着家族团聚、共享美食的文化理念。这种方式延续至现代，成为中国饮食文化的重要特征。</p> <!-- 描述文字 -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 非典至今：分餐/公筷复兴 -->
+                            <div class='timeline-item'> <!-- 时间轴项 -->
+                                <div class='timeline-dot top-0'></div> <!-- 时间轴节点 -->
+                                <div class='flex flex-col md:flex-row items-center'> <!-- 内容布局 -->
+                                    <div class='md:w-1/2 md:pr-12 md:text-left order-2 md:order-1 mt-6 md:mt-0'> <!-- 文字内容 -->
+                                        <h3 class='text-xl font-bold text-gray-900 mb-2'>非典至今：分餐、公筷复兴</h3> <!-- 时间点标题 -->
+                                        <p class='text-gray-700 leading-relaxed'>2003年非典疫情后，公共卫生意识提升，分餐制和公筷公勺的使用重新受到重视。许多餐厅开始主动提供公筷，政府也积极推广"文明餐桌"行动。这一变化体现了传统习俗与现代卫生观念的融合。</p> <!-- 描述文字 -->
+                                    </div>
+                                    <div class='md:w-1/2 order-1 md:order-2'> <!-- 图片内容 -->
+                                        <div class='rounded-xl overflow-hidden shadow-primary transform transition-transform duration-500 hover:scale-[1.02]'> <!-- 图片容器 -->
+                                            <img src='image/history3.png' alt='现代分餐/公筷场景' class='w-full h-auto object-cover' loading='lazy'/> <!-- 图片 -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 当代：一人食时代 -->
+                            <div class='timeline-item'> <!-- 时间轴项 -->
+                                <div class='timeline-dot top-0'></div> <!-- 时间轴节点 -->
+                                <div class='flex flex-col md:flex-row items-center'> <!-- 内容布局 -->
+                                    <div class='md:w-1/2'> <!-- 图片内容 -->
+                                        <div class='rounded-xl overflow-hidden shadow-primary transform transition-transform duration-500 hover:scale-[1.02]'> <!-- 图片容器 -->
+                                            <img src='image/history4.png' alt='当代一人食场景' class='w-full h-auto object-cover' loading='lazy'/> <!-- 图片 -->
+                                        </div>
+                                    </div>
+                                    <div class='md:w-1/2 md:pl-12 mt-6 md:mt-0'> <!-- 文字内容 -->
+                                        <h3 class='text-xl font-bold text-gray-900 mb-2'>当代：一人食时代</h3> <!-- 时间点标题 -->
+                                        <p class='text-gray-700 leading-relaxed'>随着城市化加速和独居人口增加，"一人食"成为新的饮食趋势。从外卖平台的兴起，到餐厅专门设置的单人座位，再到迷你家电的热销，都反映了这一变化。餐桌上，往往只剩下一双筷子，一个人的饭菜，和一个人的时光。</p> <!-- 描述文字 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 第二章：一个人的餐桌 -->
+                <section id='chapter2' class='mb-20 scroll-mt-24'> <!-- 第二章，设置滚动锚点 -->
+                    <div class='flex items-center mb-8'> <!-- 章节标题区域 -->
+                        <div class='w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-3'>2</div> <!-- 章节编号 -->
+                        <h2 class='text-3xl font-bold text-gray-900'>一个人的餐桌</h2> <!-- 章节标题 -->
+                    </div>
+                    <p class='text-lg leading-relaxed mb-10'>一人食已不再是偶然现象，而成为一种社会常态。从繁华都市到小镇青年，从外卖订单到餐厅独坐，一个人的餐桌正在重塑中国的饮食文化和社会交往方式。</p> <!-- 章节引言 -->
+
+                    <!-- 数据可视化 -->
+                    <div class='bg-white rounded-xl shadow-primary p-6 md:p-8 mb-16'> <!-- 数据可视化卡片 -->
+                        <h3 class='text-xl font-semibold mb-6 text-gray-800'>一人食的现实状况</h3> <!-- 卡片标题 -->
+                        <div class='mb-8'> <!-- 图表容器 -->
+                            <div class='flex justify-between items-center mb-4'> <!-- 图表标题和切换按钮 -->
+                                <h4 class='font-medium text-gray-700'>中国单身人口分布与一人食经济规模</h4> <!-- 图表标题 -->
+                                <div class='flex space-x-2'> <!-- 切换按钮组 -->
+                                    <button class='chart-toggle-btn active px-3 py-1 text-sm bg-primary text-white rounded-full' data-target='single-population'>人口分布</button> <!-- 切换按钮 -->
+                                    <button class='chart-toggle-btn px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full' data-target='dining-economy'>经济规模</button> <!-- 切换按钮 -->
+                                </div>
+                            </div>
+                            <div id='single-population-chart' class='chart-container h-[400px] w-full'></div> <!-- 人口分布图表容器 -->
+                            <div id='dining-economy-chart' class='chart-container h-[400px] w-full hidden'></div> <!-- 经济规模图表容器，默认隐藏 -->
+                        </div>
+                        <div class='grid grid-cols-1 md:grid-cols-3 gap-6 mt-10'> <!-- 数据卡片网格 -->
+                            <div class='bg-gray-50 p-5 rounded-lg text-center'> <!-- 数据卡片 -->
+                                <div class='text-3xl font-bold text-primary mb-2'>2.4亿</div> <!-- 数据值 -->
+                                <p class='text-gray-600'>中国单身成年人数量</p> <!-- 数据描述 -->
+                            </div>
+                            <div class='bg-gray-50 p-5 rounded-lg text-center'> <!-- 数据卡片 -->
+                                <div class='text-3xl font-bold text-primary mb-2'>68%</div> <!-- 数据值 -->
+                                <p class='text-gray-600'>年轻人每周至少3次一人食</p> <!-- 数据描述 -->
+                            </div>
+                            <div class='bg-gray-50 p-5 rounded-lg text-center'> <!-- 数据卡片 -->
+                                <div class='text-3xl font-bold text-primary mb-2'>3.6万亿</div> <!-- 数据值 -->
+                                <p class='text-gray-600'>2023年"孤独经济"市场规模</p> <!-- 数据描述 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 一人食故事集 -->
+                    <div > <!-- 故事集区域 -->
+                        <h3 class='text-xl font-semibold mb-6 text-gray-800'>一人食的声音</h3> <!-- 区域标题 -->
+                        <p class='text-gray-700 mb-8'>鼠标悬停在图片上，聆听他们的故事...</p> <!-- 提示文字 -->
+                        <div class='grid grid-cols-1 md:grid-cols-3 gap-6'> <!-- 故事卡片网格 -->
+                            <!-- 故事1：都市青年 -->
+                            <div class='audio-story-card group relative rounded-xl overflow-hidden shadow-primary'> <!-- 故事卡片 -->
+                                <div class='aspect-w-1 aspect-h-1'> <!-- 图片容器，保持1:1比例 -->
+                                    <img src='image/designerph.png' alt='一人食餐厅的设计师' class='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110' loading='lazy'/> <!-- 图片，悬停时缩放 -->
+                                </div>
+                                <!-- 人物信息覆盖层 -->
+                                <div class='absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6'> <!-- 渐变覆盖层，悬停时显示 -->
+                                    <h4 class='text-white text-xl font-semibold mb-2'>林小雨，28岁，设计师</h4> <!-- 人物信息 -->
+                                    <p class='text-gray-200 mb-4'>上海 · 独居2年</p> <!-- 人物背景 -->
+                                    <!-- 音频播放器 -->
+                                    <div class='audio-player bg-white/20 backdrop-blur-sm rounded-full p-3 flex items-center'> <!-- 音频播放器 -->
+                                        <!-- 音频元素 -->
+                                        <audio id='audio-designer' src='record/designer.mp3' preload='metadata'></audio>
+                                        
+                                        <!-- 播放/暂停按钮 -->
+                                        <button class='audio-play-btn w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary mr-3' onclick='toggleAudio("audio-designer", this)'> <!-- 播放按钮 -->
+                                            <i class='fas fa-play'> <!-- 播放图标 -->
+                                            </i>
+                                        </button>
+                                        
+                                        <!-- 进度条容器 -->
+                                        <div class='flex-1 mx-3'>
+                                            <div class='h-1 bg-white/30 rounded-full overflow-hidden mb-1'> <!-- 进度条背景 -->
+                                                <div class='audio-progress h-full bg-white rounded-full w-0 transition-all duration-100' onclick='setAudioProgress("audio-designer", event)'></div> <!-- 进度条 -->
+                                            </div>
+                                            <div class='flex justify-between text-xs text-white/80'>
+                                                <span class='audio-current-time'>0:00</span> <!-- 当前时间 -->
+                                                <span class='audio-duration'>0:00</span> <!-- 总时长 -->
+                                            </div>
+                                        </div>
+                        
+                                    </div>
+                                    <!-- 文字摘要 -->
+                                    <div class='mt-4 text-white/90 text-sm leading-relaxed'>"我喜欢一个人吃饭的自由，可以完全按照自己的节奏来。不用迁就别人的口味，不用找话题聊天，就静静地享受食物和自己的思绪。对我来说，这是一天中难得的独处时光。"</div> <!-- 故事摘要 -->
+                                </div>
+                                <!-- 音频元素 -->
+                                <audio class='story-audio' preload='none'> <!-- 音频元素 -->
+                                    <source src='#' type='audio/mpeg'/>
+                                    您的浏览器不支持音频播放。
+                                </audio>
+                            </div>
+
+                            <!-- 故事2：加班族 -->
+                            <div class='audio-story-card group relative rounded-xl overflow-hidden shadow-primary'> <!-- 故事卡片 -->
+                                <div class='aspect-w-1 aspect-h-1'> <!-- 图片容器，保持1:1比例 -->
+                                    <img src='image/codeph.png' alt='点外卖的疲惫上班族' class='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110' loading='lazy'/> <!-- 图片，悬停时缩放 -->
+                                </div>
+                                <!-- 人物信息覆盖层 -->
+                                <div class='absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6'> <!-- 渐变覆盖层，悬停时显示 -->
+                                    <h4 class='text-white text-xl font-semibold mb-2'>张明，32岁，程序员</h4> <!-- 人物信息 -->
+                                    <p class='text-gray-200 mb-4'>北京 · 独居5年</p> <!-- 人物背景 -->
+                                    <!-- 音频播放器 -->
+                                    <div class='audio-player bg-white/20 backdrop-blur-sm rounded-full p-3 flex items-center'> <!-- 音频播放器 -->
+                                        <!-- 音频元素 -->
+                                        <audio id='audio-code' src='record/code.mp3' preload='metadata'></audio>
+                                        
+                                        <!-- 播放/暂停按钮 -->
+                                        <button class='audio-play-btn w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary mr-3' onclick='toggleAudio("audio-code", this)'> <!-- 播放按钮 -->
+                                            <i class='fas fa-play'> <!-- 播放图标 -->
+                                            </i>
+                                        </button>
+                                        
+                                        <!-- 进度条容器 -->
+                                        <div class='flex-1 mx-3'>
+                                            <div class='h-1 bg-white/30 rounded-full overflow-hidden mb-1'> <!-- 进度条背景 -->
+                                                <div class='audio-progress h-full bg-white rounded-full w-0 transition-all duration-100' onclick='setAudioProgress("audio-code", event)'></div> <!-- 进度条 -->
+                                            </div>
+                                            <div class='flex justify-between text-xs text-white/80'>
+                                                <span class='audio-current-time'>0:00</span> <!-- 当前时间 -->
+                                                <span class='audio-duration'>0:00</span> <!-- 总时长 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 文字摘要 -->
+                                    <div class='mt-4 text-white/90 text-sm leading-relaxed'>"加班到深夜，外卖是唯一的选择。不是不想和朋友吃饭，是真的没时间。有时候周末也只想宅在家里，点个外卖，看看剧。一个人吃饭久了，好像也习惯了这种孤独。"</div> <!-- 故事摘要 -->
+                                </div>
+                            </div>
+
+                            <!-- 故事3：大学生 -->
+                            <div class='audio-story-card group relative rounded-xl overflow-hidden shadow-primary'> <!-- 故事卡片 -->
+                                <div class='aspect-w-1 aspect-h-1'> <!-- 图片容器，保持1:1比例 -->
+                                    <img src='image/stuph.png' alt='大学独自用餐的学生' class='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110' loading='lazy'/> <!-- 图片，悬停时缩放 -->
+                                </div>
+                                <!-- 人物信息覆盖层 -->
+                                <div class='absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6'> <!-- 渐变覆盖层，悬停时显示 -->
+                                    <h4 class='text-white text-xl font-semibold mb-2'>王琳，20岁，大学生</h4> <!-- 人物信息 -->
+                                    <p class='text-gray-200 mb-4'>广州 · 住校</p> <!-- 人物背景 -->
+                                    <!-- 音频播放器 -->
+                                    <div class='audio-player bg-white/20 backdrop-blur-sm rounded-full p-3 flex items-center'> <!-- 音频播放器 -->
+                                        <!-- 音频元素 -->
+                                        <audio id='audio-collegestu' src='record/collegestu.mp3' preload='metadata'></audio>
+                                        
+                                        <!-- 播放/暂停按钮 -->
+                                        <button class='audio-play-btn w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary mr-3' onclick='toggleAudio("audio-collegestu", this)'> <!-- 播放按钮 -->
+                                            <i class='fas fa-play'> <!-- 播放图标 -->
+                                            </i>
+                                        </button>
+                                        
+                                        <!-- 进度条容器 -->
+                                        <div class='flex-1 mx-3'>
+                                            <div class='h-1 bg-white/30 rounded-full overflow-hidden mb-1'> <!-- 进度条背景 -->
+                                                <div class='audio-progress h-full bg-white rounded-full w-0 transition-all duration-100' onclick='setAudioProgress("audio-collegestu", event)'></div> <!-- 进度条 -->
+                                            </div>
+                                            <div class='flex justify-between text-xs text-white/80'>
+                                                <span class='audio-current-time'>0:00</span> <!-- 当前时间 -->
+                                                <span class='audio-duration'>0:00</span> <!-- 总时长 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 文字摘要 -->
+                                    <div class='mt-4 text-white/90 text-sm leading-relaxed'>"室友们都有自己的课表和社团活动，很难凑在一起吃饭。一个人在食堂吃饭，可以边吃边看课件或者刷手机，反而觉得效率很高。放假回家和家人一起吃饭，反而有点不习惯了。"</div> <!-- 故事摘要 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 第三章：选择一人食的深层原因 -->
+                <section id='chapter3' class='mb-20 scroll-mt-24'> <!-- 第三章，设置滚动锚点 -->
+                    <div class='flex items-center mb-8'> <!-- 章节标题区域 -->
+                        <div class='w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-3'>3</div> <!-- 章节编号 -->
+                        <h2 class='text-3xl font-bold text-gray-900'>选择一人食的深层原因</h2> <!-- 章节标题 -->
+                    </div>
+                    <div class='grid grid-cols-1 lg:grid-cols-2 gap-10'> <!-- 两列布局 -->
+                        <!-- 主动选择 -->
+                        <div class='bg-white rounded-xl shadow-primary p-6 md:p-8'> <!-- 主动选择卡片 -->
+                            <div class='flex items-center mb-6'> <!-- 卡片标题区域 -->
+                                <div class='w-12 h-12 rounded-full bg-warm/20 flex items-center justify-center text-warm mr-4'> <!-- 图标背景 -->
+                                    <i class='fas fa-heart text-xl'> <!-- 心形图标 -->
+                                    </i>
+                                </div>
+                                <h3 class='text-2xl font-semibold text-gray-900'>主动选择</h3> <!-- 卡片标题 -->
+                            </div>
+                            <div class='mb-6'> <!-- 内容区域 -->
+                                <img src='image/reason1.png' alt='享受独自用餐的年轻人' class='w-full h-64 object-cover rounded-lg mb-6' loading='lazy'/> <!-- 图片 -->
+                                <h4 class='text-lg font-medium text-gray-800 mb-3'>寻找自由和独立的安全感</h4> <!-- 子标题 -->
+                                <p class='text-gray-700 leading-relaxed mb-4'>"一人食"对有些人而言，是一种主动的选择，从中感受到的是一种自在和掌控感。在快节奏的现代生活中，独自用餐成为一种难得的放松和自我对话的时刻。</p> <!-- 段落文字 -->
+                                <p class='text-gray-700 leading-relaxed'>这种选择反映了当代年轻人对个人空间和生活自主权的重视。他们不再将独自用餐视为孤独的象征，而是将其看作一种生活态度——享受一个人的时光，不必迁就他人，完全按照自己的节奏和喜好来安排饮食。</p> <!-- 段落文字 -->
+                            </div>
+                            <div class='bg-gray-50 p-5 rounded-lg'> <!-- 列表卡片 -->
+                                <h4 class='font-medium text-gray-800 mb-3'>主动选择一人食的主要原因</h4> <!-- 列表标题 -->
+                                <ul class='space-y-3'> <!-- 无序列表 -->
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check-circle text-success mt-1 mr-3'> <!-- 成功图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>享受个人空间和自由</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check-circle text-success mt-1 mr-3'> <!-- 成功图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>可以专注于自己喜欢的食物</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check-circle text-success mt-1 mr-3'> <!-- 成功图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>节省社交精力，减少不必要的应酬</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check-circle text-success mt-1 mr-3'> <!-- 成功图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>能够更好地控制饮食健康和预算</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check-circle text-success mt-1 mr-3'> <!-- 成功图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>喜欢独自思考或利用用餐时间阅读、工作</span> <!-- 列表文本 -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 被动选择 -->
+                        <div class='bg-white rounded-xl shadow-primary p-6 md:p-8'> <!-- 被动选择卡片 -->
+                            <div class='flex items-center mb-6'> <!-- 卡片标题区域 -->
+                                <div class='w-12 h-12 rounded-full bg-cold/20 flex items-center justify-center text-cold mr-4'> <!-- 图标背景 -->
+                                    <i class='fas fa-exclamation-circle text-xl'> <!-- 感叹号图标 -->
+                                    </i>
+                                </div>
+                                <h3 class='text-2xl font-semibold text-gray-900'>被动选择</h3> <!-- 卡片标题 -->
+                            </div>
+                            <div class='mb-6'> <!-- 内容区域 -->
+                                <img src='image/reason2.png' alt='被动选择一人食的场景' class='w-full h-64 object-cover rounded-lg mb-6' loading='lazy'/> <!-- 图片 -->
+                                <h4 class='text-lg font-medium text-gray-800 mb-3'>城市化带来的社交空间压缩</h4> <!-- 子标题 -->
+                                <p class='text-gray-700 leading-relaxed mb-4'>对另一些人来说，一人食并非主动选择，而是社会变迁和生活压力下的无奈之举。城市化进程中，人口流动加剧，传统社区结构被打破，人们往往在陌生的城市中独自生活和工作。</p> <!-- 段落文字 -->
+                                <p class='text-gray-700 leading-relaxed'>长时间的工作、通勤压力，使得社交时间被严重压缩。单身人口数量的上升，也导致了不得不"一人食"的现象增多。这种被动选择背后，反映了当代都市生活的孤独与压力。</p> <!-- 段落文字 -->
+                            </div>
+                            <div class='bg-gray-50 p-5 rounded-lg'> <!-- 列表卡片 -->
+                                <h4 class='font-medium text-gray-800 mb-3'>被动选择一人食的主要原因</h4> <!-- 列表标题 -->
+                                <ul class='space-y-3'> <!-- 无序列表 -->
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation-circle text-error mt-1 mr-3'> <!-- 错误图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>单身人口数量上升，缺乏固定用餐伴侣</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation-circle text-error mt-1 mr-3'> <!-- 错误图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>工作繁忙，加班文化导致无暇社交</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation-circle text-error mt-1 mr-3'> <!-- 错误图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>城市化导致远离家人和熟悉的社交圈</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation-circle text-error mt-1 mr-3'> <!-- 错误图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>社交焦虑或社交疲劳</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation-circle text-error mt-1 mr-3'> <!-- 错误图标 -->
+                                        </i>
+                                        <span class='text-gray-700'>经济压力限制了外出就餐和社交活动</span> <!-- 列表文本 -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 第四章：一人食催生的新市场 -->
+                <section id='chapter4' class='mb-20 scroll-mt-24'> <!-- 第四章，设置滚动锚点 -->
+                    <div class='flex items-center mb-8'> <!-- 章节标题区域 -->
+                        <div class='w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-3'>4</div> <!-- 章节编号 -->
+                        <h2 class='text-3xl font-bold text-gray-900'>一人食催生的新市场</h2> <!-- 章节标题 -->
+                    </div>
+                    <p class='text-lg leading-relaxed mb-10'>基于一人食需求产生的商业模式蓬勃发展，这些商业模式也进一步鼓励了这种现象。从餐饮业到家电业，从食品加工到外卖服务，一个围绕"孤独"的百亿级市场正在形成。</p> <!-- 章节引言 -->
+
+                    <div class='grid grid-cols-1 md:grid-cols-2 gap-8 mb-12'> <!-- 两列布局 -->
+                        <!-- 餐饮业的变化 -->
+                        <div class='bg-white rounded-xl shadow-primary overflow-hidden'> <!-- 餐饮变化卡片 -->
+                            <div class='h-56 overflow-hidden'> <!-- 图片容器 -->
+                                <img src='image/neweco1.png' alt='一人食与熊' class='w-full h-full object-cover transition-transform duration-700 hover:scale-110' loading='lazy'/> <!-- 图片，悬停时缩放 -->
+                            </div>
+                            <div class='p-6'> <!-- 内容区域 -->
+                                <h3 class='text-xl font-semibold text-gray-900 mb-3'>餐饮业的创新适应</h3> <!-- 子标题 -->
+                                <p class='text-gray-700 leading-relaxed mb-4'>餐饮企业纷纷推出针对单人顾客的服务和产品。海底捞为独自用餐的顾客提供玩偶陪伴，许多餐厅设置了单人吧台座位，快餐连锁店推出"一人食套餐"，这些创新不仅满足了需求，也在一定程度上减少了独自用餐的尴尬感。</p> <!-- 段落文字 -->
+                                <div class='flex flex-wrap gap-2 mt-4'> <!-- 标签组 -->
+                                    <span class='px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm'>单人座位</span> <!-- 标签 -->
+                                    <span class='px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm'>迷你套餐</span> <!-- 标签 -->
+                                    <span class='px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm'>玩偶陪吃</span> <!-- 标签 -->
+                                    <span class='px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm'>快速出餐</span> <!-- 标签 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 家电业的变化 -->
+                        <div class='bg-white rounded-xl shadow-primary overflow-hidden'> <!-- 家电变化卡片 -->
+                            <div class='h-56 overflow-hidden'> <!-- 图片容器 -->
+                                <img src='image/neweco2.png' alt='淘宝热卖的迷你家电' class='w-full h-full object-cover transition-transform duration-700 hover:scale-110' loading='lazy'/> <!-- 图片，悬停时缩放 -->
+                            </div>
+                            <div class='p-6'> <!-- 内容区域 -->
+                                <h3 class='text-xl font-semibold text-gray-900 mb-3'>迷你家电的热销浪潮</h3> <!-- 子标题 -->
+                                <p class='text-gray-700 leading-relaxed mb-4'>家电市场也针对一人食需求推出了各种迷你产品。从0.8升的迷你电饭煲，到单人份的咖啡机，再到小型电煮锅，这些产品体积小巧、功能专一，完美契合了独居人士的需求。淘宝数据显示，迷你家电品类近年来年增长率超过40%。</p> <!-- 段落文字 -->
+                                <div class='flex flex-wrap gap-2 mt-4'> <!-- 标签组 -->
+                                    <span class='px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm'>迷你电饭煲</span> <!-- 标签 -->
+                                    <span class='px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm'>单人咖啡机</span> <!-- 标签 -->
+                                    <span class='px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm'>小型电煮锅</span> <!-- 标签 -->
+                                    <span class='px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm'>迷你烤箱</span> <!-- 标签 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 其他一人食相关产业 -->
+                    <div class='bg-white rounded-xl shadow-primary p-6 md:p-8 mb-8'> <!-- 相关产业卡片 -->
+                        <h3 class='text-xl font-semibold mb-6 text-gray-800'>一人食经济的其他表现</h3> <!-- 卡片标题 -->
+                        <div class='grid grid-cols-1 md:grid-cols-3 gap-6'> <!-- 三列布局 -->
+                            <!-- 预制菜 -->
+                            <div class='border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow duration-300'> <!-- 产业项 -->
+                                <div class='w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4'> <!-- 图标背景 -->
+                                    <i class='fas fa-utensils text-primary text-xl'> <!-- 餐具图标 -->
+                                    </i>
+                                </div>
+                                <h4 class='text-lg font-medium text-gray-800 mb-2'>预制菜市场</h4> <!-- 产业标题 -->
+                                <p class='text-gray-600 mb-3'>3分钟加热即食的预制菜成为都市年轻人的新宠，2023年市场规模突破3000亿元。</p> <!-- 产业描述 -->
+                                <div class='text-primary font-semibold'>年增长率：53%</div> <!-- 数据 -->
+                            </div>
+
+                            <!-- 外卖服务 -->
+                            <div class='border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow duration-300'> <!-- 产业项 -->
+                                <div class='w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4'> <!-- 图标背景 -->
+                                    <i class='fas fa-motorcycle text-primary text-xl'> <!-- 摩托车图标 -->
+                                    </i>
+                                </div>
+                                <h4 class='text-lg font-medium text-gray-800 mb-2'>外卖服务</h4> <!-- 产业标题 -->
+                                <p class='text-gray-600 mb-3'>单人份外卖订单占比逐年攀升，"无需餐具"选项使用率增长显著。</p> <!-- 产业描述 -->
+                                <div class='text-primary font-semibold'>单人订单占比：62%</div> <!-- 数据 -->
+                            </div>
+
+                            <!-- 一人旅行 -->
+                            <div class='border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow duration-300'> <!-- 产业项 -->
+                                <div class='w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4'> <!-- 图标背景 -->
+                                    <i class='fas fa-suitcase text-primary text-xl'> <!-- 行李箱图标 -->
+                                    </i>
+                                </div>
+                                <h4 class='text-lg font-medium text-gray-800 mb-2'>一人旅行</h4> <!-- 产业标题 -->
+                                <p class='text-gray-600 mb-3'>独自旅行成为新趋势，酒店推出单人房，旅行社开发"一人游"产品。</p> <!-- 产业描述 -->
+                                <div class='text-primary font-semibold'>年增长率：35%</div> <!-- 数据 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 商业宣传对消费者认知的影响 -->
+                    <div class='bg-gradient-to-r from-warm/10 to-cold/10 rounded-xl p-6 md:p-8'> <!-- 影响分析卡片 -->
+                        <h3 class='text-xl font-semibold mb-4 text-gray-800'>商业行为如何影响消费者认知</h3> <!-- 卡片标题 -->
+                        <p class='text-gray-700 leading-relaxed mb-6'>对一人食的商业宣传在满足需求的同时，也在反方向影响着消费者认知。通过精心设计的营销话术和视觉呈现，商家将"一人食"与"独立"、"时尚"、"高品质生活"等概念绑定，潜移默化地改变着人们对独自用餐的看法。</p> <!-- 段落文字 -->
+                        <div class='grid grid-cols-1 md:grid-cols-2 gap-6'> <!-- 两列布局 -->
+                            <div class='bg-white p-5 rounded-lg shadow-sm'> <!-- 正面影响卡片 -->
+                                <h4 class='font-medium text-gray-800 mb-3 flex items-center'> <!-- 卡片标题 -->
+                                    <i class='fas fa-plus-circle text-success mr-2'> <!-- 加号图标 -->
+                                    </i>
+                                    正面影响
+                                </h4>
+                                <ul class='space-y-2 text-gray-700'> <!-- 无序列表 -->
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check text-success mt-1 mr-2'> <!-- 对勾图标 -->
+                                        </i>
+                                        <span >减少独自用餐的尴尬感和社会压力</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check text-success mt-1 mr-2'> <!-- 对勾图标 -->
+                                        </i>
+                                        <span >赋予一人食积极的社会意义和身份认同</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check text-success mt-1 mr-2'> <!-- 对勾图标 -->
+                                        </i>
+                                        <span >为独居人群提供更多便利和选择</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-check text-success mt-1 mr-2'> <!-- 对勾图标 -->
+                                        </i>
+                                        <span >鼓励人们关注自我需求和个人成长</span> <!-- 列表文本 -->
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class='bg-white p-5 rounded-lg shadow-sm'> <!-- 潜在隐忧卡片 -->
+                                <h4 class='font-medium text-gray-800 mb-3 flex items-center'> <!-- 卡片标题 -->
+                                    <i class='fas fa-minus-circle text-error mr-2'> <!-- 减号图标 -->
+                                    </i>
+                                    潜在隐忧
+                                </h4>
+                                <ul class='space-y-2 text-gray-700'> <!-- 无序列表 -->
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation text-error mt-1 mr-2'> <!-- 感叹号图标 -->
+                                        </i>
+                                        <span >可能强化社会原子化趋势</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation text-error mt-1 mr-2'> <!-- 感叹号图标 -->
+                                        </i>
+                                        <span >将社交缺失包装成"时尚生活方式"</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation text-error mt-1 mr-2'> <!-- 感叹号图标 -->
+                                        </i>
+                                        <span >过度商业化可能忽视真实的社会需求</span> <!-- 列表文本 -->
+                                    </li>
+                                    <li class='flex items-start'> <!-- 列表项 -->
+                                        <i class='fas fa-exclamation text-error mt-1 mr-2'> <!-- 感叹号图标 -->
+                                        </i>
+                                        <span >可能加剧人们对社交的焦虑和逃避</span> <!-- 列表文本 -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 第五章：一人食的社会现象深入探讨 -->
+                <section id='chapter5' class='mb-20 scroll-mt-24'> <!-- 第五章，设置滚动锚点 -->
+                    <div class='flex items-center mb-8'> <!-- 章节标题区域 -->
+                        <div class='w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-3'>5</div> <!-- 章节编号 -->
+                        <h2 class='text-3xl font-bold text-gray-900'>一人食的社会现象深入探讨</h2> <!-- 章节标题 -->
+                    </div>
+                    <p class='text-lg leading-relaxed mb-10'>一人食现象引发了广泛的社会讨论。有人认为这是城市化和现代化的必然结果，也有人担忧过度原子化会损害社会联结。这场辩论不仅关乎饮食习惯，更触及当代中国社会结构和文化价值观的深层变迁。</p> <!-- 章节引言 -->
+
+                    <!-- 用户投票互动 -->
+                    <div class='bg-white rounded-xl shadow-primary p-6 md:p-8 mb-12'> <!-- 投票互动卡片 -->
+                        <h3 class='text-xl font-semibold mb-6 text-gray-800'>你怎么看？</h3> <!-- 卡片标题 -->
+                        <div class='mb-8'> <!-- 投票内容 -->
+                            <h4 class='text-lg font-medium text-gray-700 mb-6 text-center'>"一人食是城市化的必然结果" VS "过度个性化损害社会联结"</h4> <!-- 投票主题 -->
+                            <div class='voting-container max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6'> <!-- 投票选项网格 -->
+                                <div class='bg-gray-50 p-6 rounded-lg border-2 border-gray-200 hover:border-primary cursor-pointer transition-colors duration-300 voting-option' data-option='result1'> <!-- 选项1 -->
+                                    <div class='flex justify-between items-center mb-4'> <!-- 标题和百分比 -->
+                                        <h5 class='font-medium text-gray-800'>一人食是城市化的必然结果</h5> <!-- 选项标题 -->
+                                        <span class='text-primary font-bold voting-percentage' data-option='result1'>62%</span> <!-- 百分比 -->
+                                    </div>
+                                    <p class='text-gray-600 text-sm mb-4'>随着城市化进程加速和生活方式变化，一人食成为越来越多人的选择，这是社会发展的自然结果。</p> <!-- 选项描述 -->
+                                    <div class='h-2 bg-gray-200 rounded-full overflow-hidden'> <!-- 进度条背景 -->
+                                        <div class='voting-progress h-full bg-primary rounded-full' data-option='result1' style='width: 62%'></div> <!-- 进度条 -->
+                                    </div>
+                                </div>
+                                <div class='bg-gray-50 p-6 rounded-lg border-2 border-gray-200 hover:border-primary cursor-pointer transition-colors duration-300 voting-option' data-option='result2'> <!-- 选项2 -->
+                                    <div class='flex justify-between items-center mb-4'> <!-- 标题和百分比 -->
+                                        <h5 class='font-medium text-gray-800'>过度个性化损害社会联结</h5> <!-- 选项标题 -->
+                                        <span class='text-primary font-bold voting-percentage' data-option='result2'>38%</span> <!-- 百分比 -->
+                                    </div>
+                                    <p class='text-gray-600 text-sm mb-4'>一人食的流行反映了社会原子化趋势，如果长期发展，可能会削弱人际关系和社区凝聚力。</p> <!-- 选项描述 -->
+                                    <div class='h-2 bg-gray-200 rounded-full overflow-hidden'> <!-- 进度条背景 -->
+                                        <div class='voting-progress h-full bg-primary rounded-full' data-option='result2' style='width: 38%'></div> <!-- 进度条 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='text-center mt-6'> <!-- 投票按钮 -->
+                                <button id='vote-button' class='bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-lg transition duration-200'>
+                                    提交我的观点
+                                </button>
+                            </div>
+                        </div>
+                        <!-- 投票结果显示 -->
+                        <div id='voting-result' class='mt-8 hidden'> <!-- 结果区域，默认隐藏 -->
+                            <div class='bg-gray-50 p-6 rounded-lg text-center'> <!-- 结果卡片 -->
+                                <i class='fas fa-check-circle text-success text-3xl mb-3'></i> <!-- 成功图标 -->
+                                <h4 class='text-lg font-semibold text-gray-800 mb-2'>投票成功！</h4> <!-- 结果标题 -->
+                                <p class='text-gray-600 mb-4'>感谢你的参与，你的观点已被记录。</p> <!-- 结果描述 -->
+                                <button id='view-results-button' class='text-primary hover:text-primary/80 font-medium transition-colors duration-200'>
+                                    查看实时结果
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 专家视角 -->
+                    <div class='mb-12'> <!-- 专家视角区域 -->
+                        <h3 class='text-xl font-semibold mb-6 text-gray-800'>专家视角</h3> <!-- 区域标题 -->
+                        <!-- 主框：李医生 -->
+                        <div class='bg-white rounded-xl shadow-lg overflow-hidden mb-8 border-l-4 border-primary'> <!-- 主框专家卡片 -->
+                            <div class='p-6'> <!-- 内容区域 -->
+                                <div class='mb-4'> <!-- 信息 -->
+                                    <h4 class='text-xl font-bold text-gray-900'>李医生</h4> <!-- 姓名 -->
+                                    <p class='text-gray-600 text-sm'>云南省楚雄市中医专家</p> <!-- 身份 -->
+                                </div>
+                                
+                                <!-- 音频播放器 -->
+                                <div class='audio-player bg-gray-100 rounded-full p-3 flex items-center mb-4'>
+                                    <audio id='audio-doctorli' src='record/doctorli.mp3' preload='metadata'></audio>
+                                    <button class='audio-play-btn w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white mr-3' onclick='toggleAudio("audio-doctorli", this)'>
+                                        <i class='fas fa-play'></i>
+                                    </button>
+                                    <div class='flex-1 mx-3'>
+                                        <div class='h-1 bg-gray-300 rounded-full overflow-hidden mb-1'>
+                                            <div class='audio-progress h-full bg-primary rounded-full w-0 transition-all duration-100' onclick='setAudioProgress("audio-doctorli", event)'></div>
+                                        </div>
+                                        <div class='flex justify-between text-xs text-gray-500'>
+                                            <span class='audio-current-time'>0:00</span>
+                                            <span class='audio-duration'>0:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <p class='text-gray-700 leading-relaxed mb-4'>"长期独居和一人食可能会导致饮食结构失衡，会可能发生营养问题、情绪问题，会进一步对健康产生影响；但一人食也有利于个人进餐时的专注度提升。无论是否一人食，我们都要用心对待每一餐。"</p> <!-- 观点 -->
+                                <div class='border-t border-gray-100 pt-4 mt-4'> <!-- 核心观点 -->
+                                    <h5 class='font-medium text-gray-800 mb-2'>核心观点</h5> <!-- 标题 -->
+                                    <ul class='space-y-2 text-gray-700'> <!-- 无序列表 -->
+                                        <li class='flex items-start'> <!-- 列表项 -->
+                                            <i class='fas fa-angle-right text-primary mt-1 mr-2'></i> <!-- 图标 -->
+                                            <span >一人食能更好的专注进食、细嚼慢咽</span> <!-- 文本 -->
+                                        </li>
+                                        <li class='flex items-start'> <!-- 列表项 -->
+                                            <i class='fas fa-angle-right text-primary mt-1 mr-2'></i> <!-- 图标 -->
+                                            <span >过于个性化、个体化的饮食易导致健康问题</span> <!-- 文本 -->
+                                        </li>
+                                        <li class='flex items-start'> <!-- 列表项 -->
+                                            <i class='fas fa-angle-right text-primary mt-1 mr-2'></i> <!-- 图标 -->
+                                            <span >一人食也要用心对待每一餐</span> <!-- 文本 -->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 副框网格 -->
+                        <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                            <!-- 副框1：朱女士 -->
+                            <div class='bg-white rounded-xl shadow-md overflow-hidden border-l-2 border-secondary'> <!-- 副框专家卡片 -->
+                                <div class='p-5'> <!-- 内容区域 -->
+                                    <div class='mb-3'> <!-- 信息 -->
+                                        <h4 class='text-lg font-semibold text-gray-900'>朱女士</h4> <!-- 姓名 -->
+                                        <p class='text-gray-600 text-xs'>中国人民大学社会学学者</p> <!-- 身份 -->
+                                    </div>
+
+                                    <!-- 音频播放器 -->
+                                    <div class='audio-player bg-gray-100 rounded-full p-2 flex items-center mb-3'>
+                                        <audio id='audio-rmdxshxzhu' src='record/rmdxshxzhu.mp3' preload='metadata'></audio>
+                                        <button class='audio-play-btn w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white mr-2' onclick='toggleAudio("audio-rmdxshxzhu", this)'>
+                                            <i class='fas fa-play text-xs'></i>
+                                        </button>
+                                        <div class='flex-1 mx-2'>
+                                            <div class='h-0.5 bg-gray-300 rounded-full overflow-hidden mb-1'>
+                                                <div class='audio-progress h-full bg-secondary rounded-full w-0 transition-all duration-100' onclick='setAudioProgress("audio-rmdxshxzhu", event)'></div>
+                                            </div>
+                                            <div class='flex justify-between text-xs text-gray-500'>
+                                                <span class='audio-current-time'>0:00</span>
+                                                <span class='audio-duration'>0:00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p class='text-gray-700 leading-relaxed'>"一人食现象本质上是社会城市化进程中的一个表现。"</p> <!-- 观点 -->
+                                </div>
+                            </div>
+
+                            <!-- 副框2：周先生 -->
+                            <div class='bg-white rounded-xl shadow-md overflow-hidden border-l-2 border-secondary'> <!-- 副框专家卡片 -->
+                                <div class='p-5'> <!-- 内容区域 -->
+                                    <div class='mb-3'> <!-- 信息 -->
+                                        <h4 class='text-lg font-semibold text-gray-900'>周先生</h4> <!-- 姓名 -->
+                                        <p class='text-gray-600 text-xs'>中央财经大学数理经济学学者</p> <!-- 身份 -->
+                                    </div>
+
+                                    <!-- 音频播放器 -->
+                                    <div class='audio-player bg-gray-100 rounded-full p-2 flex items-center mb-3'>
+                                        <audio id='audio-ecozhou' src='record/ecozhou.mp3' preload='metadata'></audio>
+                                        <button class='audio-play-btn w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white mr-2' onclick='toggleAudio("audio-ecozhou", this)'>
+                                            <i class='fas fa-play text-xs'></i>
+                                        </button>
+                                        <div class='flex-1 mx-2'>
+                                            <div class='h-0.5 bg-gray-300 rounded-full overflow-hidden mb-1'>
+                                                <div class='audio-progress h-full bg-secondary rounded-full w-0 transition-all duration-100' onclick='setAudioProgress("audio-ecozhou", event)'></div>
+                                            </div>
+                                            <div class='flex justify-between text-xs text-gray-500'>
+                                                <span class='audio-current-time'>0:00</span>
+                                                <span class='audio-duration'>0:00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p class='text-gray-700 leading-relaxed'>"一人食经济或将重塑未来十年的产业竞争格局。"</p> <!-- 观点 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 结语 -->
+                <section id='conclusion' class='mb-16 scroll-mt-24'> <!-- 结语部分，设置滚动锚点 -->
+                    <div class='flex items-center mb-8'> <!-- 章节标题区域 -->
+                        <div class='w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-3'>
+                            <i class='fas fa-flag-checkered'> <!-- 终点旗帜图标 -->
+                            </i>
+                        </div>
+                        <h2 class='text-3xl font-bold text-gray-900'>结语</h2> <!-- 章节标题 -->
+                    </div>
+                    <div class='bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-8'> <!-- 结语卡片 -->
+                        <h3 class='text-2xl font-semibold mb-4 text-gray-800'>在孤独与自由之间</h3> <!-- 结语标题 -->
+                        <p class='text-lg leading-relaxed mb-6'>一人食现象远不止是饮食方式的变化，它折射出当代中国社会结构、文化价值观和人际关系的深刻变迁。在城市化和现代化的进程中，我们既享受着前所未有的个人自由，也面临着日益增长的孤独感。</p> <!-- 段落文字 -->
+                        <p class='text-lg leading-relaxed mb-6'>一人食不是问题本身，而是社会变迁的一个缩影。重要的不是否定或推崇这种现象，而是理解它背后的社会原因和个体需求。在追求个人独立的同时，我们也需要思考如何重建社会联结，如何在孤独与自由之间找到平衡。</p> <!-- 段落文字 -->
+                        <p class='text-lg leading-relaxed mb-8'>毕竟，食物不仅是身体的燃料，也是情感的纽带。无论选择何种用餐方式，我们内心深处对温暖和连接的渴望，始终未变。</p> <!-- 段落文字 -->
+                        <div class='flex flex-wrap gap-4 justify-center'> <!-- 按钮组 -->
+                            <button class='bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition duration-200 flex items-center'> <!-- 分享故事按钮 -->
+                                <i class='fas fa-pen-alt mr-2'> <!-- 钢笔图标 -->
+                                </i>
+                                分享你的故事
+                            </button>
+                            <button class='bg-white hover:bg-gray-50 text-primary font-medium py-3 px-6 rounded-lg border border-primary transition duration-200 flex items-center'> <!-- 查看讨论按钮 -->
+                                <i class='fas fa-comments mr-2'> <!-- 评论图标 -->
+                                </i>
+                                查看讨论
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class='text-center py-8'>
+                    <p class='text-xl font-medium text-gray-700'>你的下一口热饭，想在哪里，和谁一起吃？</p>
+                </div>
+
+                <!-- 故事征集 -->
+                <section class='mb-16'> <!-- 故事征集部分 -->
+                    <div class='bg-white rounded-xl shadow-primary p-6 md:p-8'> <!-- 征集卡片 -->
+                        <h3 class='text-xl font-semibold mb-6 text-gray-800'>分享你的一人食故事</h3> <!-- 卡片标题 -->
+                        <p class='text-gray-700 mb-6'>我们正在征集关于一人食的真实故事。无论是主动选择还是被动接受，无论是温馨的还是孤独的，我们都期待听到你的声音。</p> <!-- 引言 -->
+                        <form id='story-submission' class='space-y-6'> <!-- 表单 -->
+                            <div class='grid grid-cols-1 md:grid-cols-2 gap-6'> <!-- 两列布局 -->
+                                <div >
+                                    <label for='name' class='block text-gray-700 font-medium mb-2'>昵称</label> <!-- 表单标签 -->
+                                    <input type='text' id='name' class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-200' placeholder='请输入你的名字或昵称' required/> <!-- 输入框 -->
+                                </div>
+                                <div >
+                                    <label for='city' class='block text-gray-700 font-medium mb-2'>所在城市</label> <!-- 表单标签 -->
+                                    <input type='text' id='city' class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-200' placeholder='请输入你所在的城市' required/> <!-- 输入框 -->
+                                </div>
+                            </div>
+                            <div >
+                                <label for='story-type' class='block text-gray-700 font-medium mb-2'>故事类型</label> <!-- 表单标签 -->
+                                <select id='story-type' class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-200' required> <!-- 下拉选择框 -->
+                                    <option value='' disabled selected>请选择故事类型</option> <!-- 默认选项 -->
+                                    <option value='active'>主动选择的一人食</option> <!-- 选项 -->
+                                    <option value='passive'>被动选择的一人食</option> <!-- 选项 -->
+                                    <option value='memorable'>最难忘的一人食经历</option> <!-- 选项 -->
+                                    <option value='change'>一人食带来的改变</option> <!-- 选项 -->
+                                </select>
+                            </div>
+                            <div >
+                                <label for='story-content' class='block text-gray-700 font-medium mb-2'>故事内容</label> <!-- 表单标签 -->
+                                <textarea id='story-content' rows='6' class='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-200' placeholder='请分享你的一人食故事...' required></textarea> <!-- 文本框 -->
+                            </div>
+                            <div >
+                                <label class='block text-gray-700 font-medium mb-2'>上传照片（可选）</label> <!-- 表单标签 -->
+                                <div class='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors duration-200 cursor-pointer' id='photo-upload-area'> <!-- 上传区域 -->
+                                    <i class='fas fa-cloud-upload-alt text-gray-400 text-3xl mb-3'> <!-- 上传图标 -->
+                                    </i>
+                                    <p class='text-gray-500 mb-2'>点击或拖拽文件到此处上传</p> <!-- 提示文字 -->
+                                    <p class='text-gray-400 text-sm'>支持JPG、PNG格式，最大5MB</p> <!-- 格式提示 -->
+                                    <input type='file' id='photo-upload' class='hidden' accept='image/jpeg,image/png'/> <!-- 隐藏的文件输入 -->
+                                </div>
+                            </div>
+                            <button type='submit' class='w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center'> <!-- 提交按钮 -->
+                                <i class='fas fa-paper-plane mr-2'> <!-- 纸飞机图标 -->
+                                </i>
+                                提交我的故事
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- 评论区 -->
+                <section class='mb-16'> <!-- 评论区部分 -->
+                    <h3 class='text-2xl font-bold text-gray-900 mb-6'>评论区</h3> <!-- 区域标题 -->
+                    <!-- 评论输入 -->
+                    <div class='bg-white rounded-xl shadow-primary p-6 mb-8'> <!-- 评论输入卡片 -->
+                        <div class='flex'> <!-- 布局 -->
+                            <div class='flex-1'> <!-- 输入区域 -->
+                                <textarea rows='3' placeholder='写下你的想法...' class='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition duration-200 resize-none' required></textarea> <!-- 文本框 -->
+                                <div class='flex justify-between items-center mt-3'> <!-- 按钮和字数统计 -->
+                                    <div class='text-xs text-gray-500'>还可以输入 200 字</div> <!-- 字数统计 -->
+                                    <button class='bg-primary hover:bg-primary/90 text-white font-medium py-1 px-4 rounded-lg transition duration-200 text-sm'>发表评论</button> <!-- 发表按钮 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 评论列表 -->
+                    <div class='space-y-6'> <!-- 评论列表容器 -->
+                        <!-- 评论1 -->
+                        <div class='bg-white rounded-xl shadow-primary p-6 hover:shadow-md transition-shadow duration-300'> <!-- 评论项 -->
+                            <div class='flex items-start mb-3'> <!-- 头像和信息 -->
+                                <div> <!-- 信息 -->
+                                    <h4 class='font-medium text-gray-900 text-sm'>城市独行侠</h4> <!-- 用户名 -->
+                                    <div class='flex items-center text-gray-500 text-xs mt-1'> <!-- 时间和地点 -->
+                                        <span>2小时前</span> <!-- 时间 -->
+                                        <span class='mx-2'>·</span> <!-- 分隔符 -->
+                                        <span>上海</span> <!-- 地点 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <p class='text-gray-700 mb-4 text-sm'>一人食真的不是孤独，而是一种自我关怀的方式。工作已经够累了，吃饭的时候终于可以完全放松，不用考虑别人的感受，这种感觉真的很好。</p> <!-- 评论内容 -->
+                            <div class='flex items-center text-xs text-gray-500 space-x-4'> <!-- 按钮组 -->
+                                <button class='flex items-center hover:text-primary transition-colors duration-200'> <!-- 点赞按钮 -->
+                                    <i class='far fa-thumbs-up mr-1'> <!-- 点赞图标 -->
+                                    </i>
+                                    <span>128</span> <!-- 点赞数 -->
+                                </button>
+                                <button class='flex items-center hover:text-primary transition-colors duration-200'> <!-- 回复按钮 -->
+                                    <i class='far fa-comment mr-1'> <!-- 评论图标 -->
+                                    </i>
+                                    <span>回复</span> <!-- 文字 -->
+                                </button>
+                                <div class='ml-auto'> <!-- 标签 -->
+                                    <span class='px-2 py-0.5 bg-primary/10 text-primary rounded-full'>主动选择</span> <!-- 标签 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 评论2 -->
+                        <div class='bg-white rounded-xl shadow-primary p-6 hover:shadow-md transition-shadow duration-300'> <!-- 评论项 -->
+                            <div class='flex items-start mb-3'> <!-- 头像和信息 -->
+                                <div> <!-- 信息 -->
+                                    <h4 class='font-medium text-gray-900 text-sm'>北漂程序员</h4> <!-- 用户名 -->
+                                    <div class='flex items-center text-gray-500 text-xs mt-1'> <!-- 时间和地点 -->
+                                        <span>昨天</span> <!-- 时间 -->
+                                        <span class='mx-2'>·</span> <!-- 分隔符 -->
+                                        <span>北京</span> <!-- 地点 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <p class='text-gray-700 mb-4 text-sm'>作为一个北漂，一人食已经成了常态。每天加班到十点，回家点个外卖，边吃边看剧，周末也不想社交，就想在家休息。有时候会觉得孤独，但习惯了也就好了。</p> <!-- 评论内容 -->
+                            <div class='flex items-center text-xs text-gray-500 space-x-4 mb-4'> <!-- 按钮组 -->
+                                <button class='flex items-center hover:text-primary transition-colors duration-200'> <!-- 点赞按钮 -->
+                                    <i class='far fa-thumbs-up mr-1'> <!-- 点赞图标 -->
+                                    </i>
+                                    <span>86</span> <!-- 点赞数 -->
+                                </button>
+                                <button class='flex items-center hover:text-primary transition-colors duration-200'> <!-- 回复按钮 -->
+                                    <i class='far fa-comment mr-1'> <!-- 评论图标 -->
+                                    </i>
+                                    <span>回复</span> <!-- 文字 -->
+                                </button>
+                                <div class='ml-auto'> <!-- 标签 -->
+                                    <span class='px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full'>被动选择</span> <!-- 标签 -->
+                                </div>
+                            </div>
+
+                            <!-- 回复 -->
+                            <div class='pl-6 border-l-2 border-gray-100 ml-4 mt-4'> <!-- 回复容器 -->
+                                <div class='flex items-start mb-3'> <!-- 头像和信息 -->
+                                        <div> <!-- 信息 -->
+                                        <h4 class='font-medium text-gray-900 text-xs'>李教授（北京大学社会学系）</h4> <!-- 用户名 -->
+                                        <div class='flex items-center text-gray-500 text-xs mt-1'> <!-- 时间 -->
+                                            <span>12小时前</span> <!-- 时间 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class='text-gray-700 mb-2 text-xs'>这种状态其实反映了当代都市年轻人的生存压力。建议你可以尝试在周末参加一些兴趣小组，既能保持个人空间，又能建立一些浅层次的社交连接，可能会缓解孤独感。</p> <!-- 回复内容 -->
+                                <div class='flex items-center text-xs text-gray-500 space-x-4'> <!-- 按钮组 -->
+                                    <button class='flex items-center hover:text-primary transition-colors duration-200'> <!-- 点赞按钮 -->
+                                        <i class='far fa-thumbs-up mr-1'> <!-- 点赞图标 -->
+                                        </i>
+                                        <span>42</span> <!-- 点赞数 -->
+                                    </button>
+                                    <button class='flex items-center hover:text-primary transition-colors duration-200'> <!-- 回复按钮 -->
+                                        <i class='far fa-comment mr-1'> <!-- 评论图标 -->
+                                        </i>
+                                        <span>回复</span> <!-- 文字 -->
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 评论3 -->
+                        <div class='bg-white rounded-xl shadow-primary p-6 hover:shadow-md transition-shadow duration-300'> <!-- 评论项 -->
+                            <div class='flex items-start mb-3'> <!-- 头像和信息 -->
+                                <div> <!-- 信息 -->
+                                    <h4 class='font-medium text-gray-900 text-sm'>美食爱好者</h4> <!-- 用户名 -->
+                                    <div class='flex items-center text-gray-500 text-xs mt-1'> <!-- 时间和地点 -->
+                                        <span>3天前</span> <!-- 时间 -->
+                                        <span class='mx-2'>·</span> <!-- 分隔符 -->
+                                        <span>广州</span> <!-- 地点 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <p class='text-gray-700 mb-4 text-sm'>我喜欢一人食，因为可以专注于食物本身。一个人去吃火锅，点自己喜欢的菜，慢慢品尝，不用顾及别人的节奏，这种感觉太棒了。而且现在很多餐厅都有单人座位，很方便。</p> <!-- 评论内容 -->
+                            <div class='flex items-center text-xs text-gray-500 space-x-4'> <!-- 按钮组 -->
+                                <button class='flex items-center hover:text-primary transition-colors duration-200'> <!-- 点赞按钮 -->
+                                    <i class='far fa-thumbs-up mr-1'> <!-- 点赞图标 -->
+                                    </i>
+                                    <span>156</span> <!-- 点赞数 -->
+                                </button>
+                                <button class='flex items-center hover:text-primary transition-colors duration-200'> <!-- 回复按钮 -->
+                                    <i class='far fa-comment mr-1'> <!-- 评论图标 -->
+                                    </i>
+                                    <span>回复</span> <!-- 文字 -->
+                                </button>
+                                <div class='ml-auto'> <!-- 标签 -->
+                                    <span class='px-2 py-0.5 bg-primary/10 text-primary rounded-full'>主动选择</span> <!-- 标签 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 加载更多 -->
+                    <div class='text-center mt-8'> <!-- 加载更多按钮 -->
+                        <button class='bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-6 rounded-lg border border-gray-300 transition duration-200 flex items-center mx-auto'> <!-- 按钮 -->
+                            <i class='fas fa-spinner mr-2'> <!-- 加载图标 -->
+                            </i>
+                            加载更多评论
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 侧边栏 -->
+            <div class='lg:w-1/4'> <!-- 侧边栏占1/4宽度 -->
+                <!-- 章节导航 -->
+                <div class='bg-white rounded-xl shadow-primary p-6 mb-8 sticky top-24'> <!-- 导航卡片，固定在顶部 -->
+                    <h3 class='text-lg font-semibold mb-4 text-gray-800'>文章导航</h3> <!-- 卡片标题 -->
+                    <ul class='space-y-2'> <!-- 导航列表 -->
+                        <li> <!-- 列表项 -->
+                            <a href='#intro' class='flex items-center text-gray-700 hover:text-primary transition-colors duration-200 py-2 px-3 rounded-lg hover:bg-primary/5'> <!-- 链接 -->
+                                <i class='fas fa-lightbulb text-primary mr-3 w-5 text-center'> <!-- 图标 -->
+                                </i>
+                                <span>引子</span> <!-- 文本 -->
+                            </a>
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='#chapter1' class='flex items-center text-gray-700 hover:text-primary transition-colors duration-200 py-2 px-3 rounded-lg hover:bg-primary/5'> <!-- 链接 -->
+                                <span class='w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs mr-3'>1</span> <!-- 编号 -->
+                                <span>从分到合再到分</span> <!-- 文本 -->
+                            </a>
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='#chapter2' class='flex items-center text-gray-700 hover:text-primary transition-colors duration-200 py-2 px-3 rounded-lg hover:bg-primary/5'> <!-- 链接 -->
+                                <span class='w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs mr-3'>2</span> <!-- 编号 -->
+                                <span>一个人的餐桌</span> <!-- 文本 -->
+                            </a>
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='#chapter3' class='flex items-center text-gray-700 hover:text-primary transition-colors duration-200 py-2 px-3 rounded-lg hover:bg-primary/5'> <!-- 链接 -->
+                                <span class='w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs mr-3'>3</span> <!-- 编号 -->
+                                <span>选择一人食的深层原因</span> <!-- 文本 -->
+                            </a>
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='#chapter4' class='flex items-center text-gray-700 hover:text-primary transition-colors duration-200 py-2 px-3 rounded-lg hover:bg-primary/5'> <!-- 链接 -->
+                                <span class='w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs mr-3'>4</span> <!-- 编号 -->
+                                <span>一人食催生的新市场</span> <!-- 文本 -->
+                            </a>
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='#chapter5' class='flex items-center text-gray-700 hover:text-primary transition-colors duration-200 py-2 px-3 rounded-lg hover:bg-primary/5'> <!-- 链接 -->
+                                <span class='w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs mr-3'>5</span> <!-- 编号 -->
+                                <span>一人食的社会现象深入探讨</span> <!-- 文本 -->
+                            </a>
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='#conclusion' class='flex items-center text-gray-700 hover:text-primary transition-colors duration-200 py-2 px-3 rounded-lg hover:bg-primary/5'> <!-- 链接 -->
+                                <i class='fas fa-flag-checkered text-primary mr-3 w-5 text-center'> <!-- 图标 -->
+                                </i>
+                                <span>结语</span> <!-- 文本 -->
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class='bg-gray-900 text-white py-12'> <!-- 页脚 -->
+        <div class='container mx-auto px-4 sm:px-6 lg:px-8'> <!-- 容器 -->
+            <div class='grid grid-cols-1 md:grid-cols-3 gap-8'> <!-- 三列布局 -->
+                <div> <!-- 网站信息 -->
+                    <div class='flex items-center mb-4'> <!-- Logo -->
+                        <i class='fas fa-utensils text-primary text-2xl mr-2'> <!-- 餐具图标 -->
+                        </i>
+                        <span class='text-xl font-bold'>小碗人间</span> <!-- 网站名称 -->
+                    </div>
+                    <p class='text-gray-400 mb-4'>关注当代中国人的饮食与生活方式变迁</p> <!-- 网站描述 -->
+                    <div class='flex space-x-4'> <!-- 社交媒体图标 -->
+                        <a href='https://weibo.com/' class='text-gray-400 hover:text-white transition-colors duration-200' target='_blank'> <!-- 微博 -->
+                            <i class='fab fa-weibo text-xl'> <!-- 微博图标 -->
+                            </i>
+                        </a>
+                        <a href='https://www.zhihu.com/' class='text-gray-400 hover:text-white transition-colors duration-200' target='_blank'> <!-- 知乎 -->
+                            <i class='fab fa-zhihu text-xl'> <!-- 知乎图标 -->
+                            </i>
+                        </a>
+                    </div>
+                </div>
+                <div> <!-- 延伸阅读 -->
+                    <h3 class='text-lg font-semibold mb-4'>延伸阅读</h3> <!-- 标题 -->
+                    <ul class='space-y-2'> <!-- 列表 -->
+                        <li> <!-- 列表项 -->
+                            <a href='https://www.zhihu.com/tardis/bd/art/572747937?source_id=1001' class='text-gray-400 hover:text-white transition-colors duration-200'>分餐制在中国丨能否分享食物，是区分关系亲疏的重要标志</a> <!-- 链接 -->
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='http://www.sx.xinhuanet.com/20250811/8b29ad1a226749a8972b0d4ca7f0cbb7/c.html' class='text-gray-400 hover:text-white transition-colors duration-200'>从将就到讲究“一人食”消费升级</a> <!-- 链接 -->
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='https://www.xiaohongshu.com/explore/68380c4d000000002300f191?app_platform=ios&app_version=8.95.1&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBbrDsWhIbA8lOWISVmpamZ-XRifNtFh2Xh0lLO9h7ikU=&author_share=1&xhsshare=WeixinSession&shareRedId=ODpEMzhJNU42NzUyOTgwNjczOThJOD5L&apptime=1754567139&share_id=f74ab448c9524e0da8332b8465017fbf#pushState' class='text-gray-400 hover:text-white transition-colors duration-200'>独居一人食｜一周灵感不重样 好好吃饭</a> <!-- 链接 -->
+                        </li>
+                    </ul>
+                </div>
+                <div> <!-- 相关数据源 -->
+                    <h3 class='text-lg font-semibold mb-4'>相关数据源</h3> <!-- 标题 -->
+                    <ul class='space-y-2'> <!-- 列表 -->
+                        <li> <!-- 列表项 -->
+                            <a href='https://www.stats.gov.cn/sj/ndsj/2024/indexch.htm' class='text-gray-400 hover:text-white transition-colors duration-200'>中国统计年鉴2024</a> <!-- 链接 -->
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='https://t.10jqka.com.cn/pid_404674928.shtml' class='text-gray-400 hover:text-white transition-colors duration-200'>艾媒咨询｜2024年中国一人食经济细分市场及消费行为研究数据</a> <!-- 链接 -->
+                        </li>
+                        <li> <!-- 列表项 -->
+                            <a href='https://www.chinairn.com/hyzx/20250422/163144174.shtml' class='text-gray-400 hover:text-white transition-colors duration-200'>2025年预制菜行业现状与发展趋势分析</a> <!-- 链接 -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class='border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm'> <!-- 版权信息 -->
+                <p>&copy; 2023 小碗人间 | 深度专题报道</p> <!-- 版权文字 -->
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script >
+        // 导航菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() { // 移动端菜单按钮点击事件
+            const mobileMenu = document.getElementById('mobile-menu'); // 获取移动端菜单
+            mobileMenu.classList.toggle('hidden'); // 切换显示/隐藏
+        });
+
+        // 滚动导航效果
+        window.addEventListener('scroll', function() { // 滚动事件
+            const header = document.getElementById('main-header'); // 获取头部导航
+            if (window.scrollY > 50) { // 如果滚动距离大于50px
+                header.classList.add('shadow-md'); // 添加阴影
+                header.classList.remove('shadow-primary'); // 移除原阴影
+            } else { // 否则
+                header.classList.remove('shadow-md'); // 移除阴影
+                header.classList.add('shadow-primary'); // 添加原阴影
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { // 获取所有锚点链接
+            anchor.addEventListener('click', function (e) { // 点击事件
+                e.preventDefault(); // 阻止默认行为
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ // 滚动到目标位置
+                    behavior: 'smooth' // 平滑滚动
+                });
+                // 关闭移动端菜单
+                document.getElementById('mobile-menu').classList.add('hidden'); // 隐藏移动端菜单
+            });
+        });
+
+        // 餐桌温度测试表单
+        document.getElementById('dining-survey').addEventListener('submit', function(e) { // 表单提交事件
+            e.preventDefault(); // 阻止默认行为
+            // 显示结果
+            document.getElementById('survey-result').classList.remove('hidden'); // 显示结果区域
+            // 模拟计算结果（实际应用中应根据用户输入计算）
+            const temperatureValue = document.getElementById('temperature-value'); // 获取温度值元素
+            const temperatureBar = document.getElementById('temperature-bar'); // 获取温度条元素
+            const resultDescription = document.getElementById('result-description'); // 获取描述元素
+
+            // 随机生成结果（实际应用中应根据用户输入计算）
+            const random = Math.random(); // 生成随机数
+            if (random < 0.3) { // 如果小于0.3
+                temperatureValue.textContent = '疏离'; // 设置温度值
+                temperatureBar.style.width = '25%'; // 设置温度条宽度
+                temperatureBar.classList.remove('from-cold', 'to-warm'); // 移除渐变类
+                temperatureBar.classList.add('from-error', 'to-cold'); // 添加新渐变类
+                resultDescription.textContent = '你的用餐习惯显示你可能处于较为疏离的状态，建议适当增加社交用餐的机会。'; // 设置描述
+            } else if (random < 0.7) { // 如果小于0.7
+                temperatureValue.textContent = '平衡'; // 设置温度值
+                temperatureBar.style.width = '65%'; // 设置温度条宽度
+                temperatureBar.classList.remove('from-error', 'to-cold', 'from-cold', 'to-warm'); // 移除渐变类
+                temperatureBar.classList.add('from-cold', 'to-warm'); // 添加新渐变类
+                resultDescription.textContent = '你的用餐习惯显示你保持着良好的社交连接，同时也享受个人空间。'; // 设置描述
+            } else { // 否则
+                temperatureValue.textContent = '温暖'; // 设置温度值
+                temperatureBar.style.width = '90%'; // 设置温度条宽度
+                temperatureBar.classList.remove('from-error', 'to-cold', 'from-cold', 'to-warm'); // 移除渐变类
+                temperatureBar.classList.add('from-warm', 'to-success'); // 添加新渐变类
+                resultDescription.textContent = '你的用餐习惯充满温暖，社交连接紧密，继续保持这种良好的状态。'; // 设置描述
+            }
+        });
+
+        // 图表切换
+        document.querySelectorAll('.chart-toggle-btn').forEach(btn => { // 获取所有图表切换按钮
+            btn.addEventListener('click', function() { // 点击事件
+                // 移除所有按钮的active类
+                document.querySelectorAll('.chart-toggle-btn').forEach(b => { // 获取所有按钮
+                    b.classList.remove('active', 'bg-primary', 'text-white'); // 移除active类和样式
+                    b.classList.add('bg-gray-200', 'text-gray-700'); // 添加默认样式
+                });
+                // 为当前按钮添加active类
+                this.classList.add('active', 'bg-primary', 'text-white'); // 添加active类和样式
+                this.classList.remove('bg-gray-200', 'text-gray-700'); // 移除默认样式
+
+                // 隐藏所有图表
+                document.querySelectorAll('.chart-container').forEach(chart => { // 获取所有图表容器
+                    chart.classList.add('hidden'); // 隐藏
+                });
+                // 显示对应图表
+                const target = this.getAttribute('data-target'); // 获取目标图表ID
+                document.getElementById(`${target}-chart`).classList.remove('hidden'); // 显示目标图表
+
+                // 如果是首次显示图表，初始化图表
+                if (!window[`${target}ChartInitialized`]) { // 如果图表未初始化
+                    initChart(target); // 初始化图表
+                    window[`${target}ChartInitialized`] = true; // 标记为已初始化
+                }
+            });
+        });
+
+        // 初始化图表
+        function initChart(type) { // 初始化图表函数
+            const chartDom = document.getElementById(`${type}-chart`); // 获取图表容器
+            const myChart = echarts.init(chartDom); // 初始化图表
+
+            let option; // 图表配置
+
+            if (type === 'single-population') { // 如果是人口分布图表
+                option = {
+                    title: {
+                        text: '2023年中国单身人口分布', // 标题
+                        left: 'center', // 居中
+                        textStyle: {
+                            color: '#333', // 颜色
+                            fontWeight: 'normal', // 字体粗细
+                            fontSize: 16 // 字体大小
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis', // 触发方式
+                        axisPointer: {
+                            type: 'shadow' // 指示器类型
+                        }
+                    },
+                    legend: {
+                        data: ['男性', '女性'], // 图例数据
+                        bottom: 10 // 底部位置
+                    },
+                    grid: {
+                        left: '3%', // 左边距
+                        right: '4%', // 右边距
+                        bottom: '15%', // 下边距
+                        top: '15%', // 上边距
+                        containLabel: true // 包含标签
+                    },
+                    xAxis: {
+                        type: 'category', // 类别轴
+                        data: ['18-24岁', '25-34岁', '35-44岁', '45-54岁', '55岁以上'], // 数据
+                        axisLabel: {
+                            rotate: 0 // 标签旋转角度
+                        }
+                    },
+                    yAxis: {
+                        type: 'value', // 值轴
+                        name: '人口数量（百万）', // 轴名称
+                        nameLocation: 'middle', // 名称位置
+                        nameGap: 40 // 名称与轴线的距离
+                    },
+                    series: [
+                        {
+                            name: '男性', // 系列名称
+                            type: 'bar', // 柱状图
+                            data: [18.2, 42.5, 28.3, 16.7, 10.2], // 数据
+                            itemStyle: {
+                                color: '#6495ED' // 颜色
+                            }
+                        },
+                        {
+                            name: '女性', // 系列名称
+                            type: 'bar', // 柱状图
+                            data: [16.5, 39.8, 26.4, 14.9, 9.3], // 数据
+                            itemStyle: {
+                                color: '#FF9E64' // 颜色
+                            }
+                        }
+                    ]
+                };
+            } else if (type === 'dining-economy') { // 如果是经济规模图表
+                option = {
+                    title: {
+                        text: '2018-2023年一人食经济规模', // 标题
+                        left: 'center', // 居中
+                        textStyle: {
+                            color: '#333', // 颜色
+                            fontWeight: 'normal', // 字体粗细
+                            fontSize: 16 // 字体大小
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis', // 触发方式
+                        axisPointer: {
+                            type: 'line' // 指示器类型
+                        }
+                    },
+                    legend: {
+                        data: ['市场规模（亿元）', '增长率（%）'], // 图例数据
+                        bottom: 10 // 底部位置
+                    },
+                    grid: {
+                        left: '3%', // 左边距
+                        right: '4%', // 右边距
+                        bottom: '15%', // 下边距
+                        top: '15%', // 上边距
+                        containLabel: true // 包含标签
+                    },
+                    xAxis: [
+                        {
+                            type: 'category', // 类别轴
+                            data: ['2018', '2019', '2020', '2021', '2022', '2023'], // 数据
+                            axisPointer: {
+                                type: 'shadow' // 指示器类型
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value', // 值轴
+                            name: '市场规模（亿元）', // 轴名称
+                            position: 'left', // 左侧
+                            axisLabel: {
+                                formatter: '{value}' // 格式化
+                            }
+                        },
+                        {
+                            type: 'value', // 值轴
+                            name: '增长率（%）', // 轴名称
+                            position: 'right', // 右侧
+                            axisLabel: {
+                                formatter: '{value}%' // 格式化
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '市场规模（亿元）', // 系列名称
+                            type: 'bar', // 柱状图
+                            data: [890, 1260, 1850, 2480, 3020, 3600], // 数据
+                            itemStyle: {
+                                color: '#FFC400' // 颜色
+                            }
+                        },
+                        {
+                            name: '增长率（%）', // 系列名称
+                            type: 'line', // 折线图
+                            yAxisIndex: 1, // 使用第二个y轴
+                            data: [32, 41, 47, 34, 22, 19], // 数据
+                            itemStyle: {
+                                color: '#52c41a' // 颜色
+                            },
+                            lineStyle: {
+                                width: 3 // 线宽
+                            },
+                            symbolSize: 8 // 标记大小
+                        }
+                    ]
+                };
+            }
+
+            option && myChart.setOption(option); // 设置图表配置
+
+            // 响应窗口大小变化
+            window.addEventListener('resize', function() { // 窗口大小变化事件
+                myChart.resize(); // 调整图表大小
+            });
+        }
+
+        // 初始化第一个图表
+        window.addEventListener('load', function() { // 页面加载完成事件
+            initChart('single-population'); // 初始化人口分布图表
+            window.singlePopulationChartInitialized = true; // 标记为已初始化
+        });
+
+        // 音频播放控制函数
+        function toggleAudio(audioId, button) { // 切换音频播放/暂停
+            const audio = document.getElementById(audioId); // 获取音频元素
+            const playIcon = button.querySelector('i'); // 获取播放图标
+            const audioPlayer = button.closest('.audio-player'); // 获取音频播放器
+            const progressBar = audioPlayer.querySelector('.audio-progress'); // 获取进度条
+            const currentTimeDisplay = audioPlayer.querySelector('.audio-current-time'); // 获取当前时间显示
+            const durationDisplay = audioPlayer.querySelector('.audio-duration'); // 获取总时长显示
+
+            if (audio.paused) { // 如果音频暂停
+                audio.play(); // 播放
+                playIcon.classList.remove('fa-play'); // 移除播放图标
+                playIcon.classList.add('fa-pause'); // 添加暂停图标
+            } else { // 否则
+                audio.pause(); // 暂停
+                playIcon.classList.remove('fa-pause'); // 移除暂停图标
+                playIcon.classList.add('fa-play'); // 添加播放图标
+            }
+
+            // 更新进度条和时间
+            audio.addEventListener('timeupdate', function() { // 时间更新事件
+                const progress = (audio.currentTime / audio.duration) * 100; // 计算进度百分比
+                progressBar.style.width = `${progress}%`; // 设置进度条宽度
+
+                // 格式化当前时间
+                const currentMinutes = Math.floor(audio.currentTime / 60); // 当前分钟
+                const currentSeconds = Math.floor(audio.currentTime % 60); // 当前秒
+                currentTimeDisplay.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`; // 显示当前时间
+
+                // 如果是首次加载，设置总时长
+                if (!durationDisplay.textContent || durationDisplay.textContent === '0:00') { // 如果总时长未设置
+                    const durationMinutes = Math.floor(audio.duration / 60); // 总分钟
+                    const durationSeconds = Math.floor(audio.duration % 60); // 总秒
+                    durationDisplay.textContent = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`; // 显示总时长
+                }
+            });
+
+            // 音频结束时重置
+            audio.addEventListener('ended', function() { // 结束事件
+                playIcon.classList.remove('fa-pause'); // 移除暂停图标
+                playIcon.classList.add('fa-play'); // 添加播放图标
+                progressBar.style.width = '0%'; // 重置进度条
+                currentTimeDisplay.textContent = '0:00'; // 重置当前时间
+            });
+        }
+
+        function setAudioProgress(audioId, event) { // 设置音频进度
+            const audio = document.getElementById(audioId); // 获取音频元素
+            const progressBarContainer = event.target.closest('div'); // 获取进度条容器
+            const progressBar = progressBarContainer.querySelector('.audio-progress'); // 获取进度条
+            const currentTimeDisplay = progressBarContainer.closest('.audio-player').querySelector('.audio-current-time'); // 获取当前时间显示
+
+            const rect = progressBarContainer.getBoundingClientRect(); // 获取容器位置和大小
+            const clickPosition = event.clientX - rect.left; // 计算点击位置
+            const progress = (clickPosition / rect.width) * 100; // 计算进度百分比
+            const seekTime = (progress / 100) * audio.duration; // 计算要跳转到的时间
+
+            audio.currentTime = seekTime; // 设置音频当前时间
+            progressBar.style.width = `${progress}%`; // 设置进度条宽度
+
+            // 更新当前时间显示
+            const currentMinutes = Math.floor(seekTime / 60); // 当前分钟
+            const currentSeconds = Math.floor(seekTime % 60); // 当前秒
+            currentTimeDisplay.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`; // 显示当前时间
+        }
+
+        // 投票互动
+        document.querySelectorAll('.voting-option').forEach(option => { // 获取所有投票选项
+            option.addEventListener('click', function() { // 点击事件
+                // 移除所有选项的选中状态
+                document.querySelectorAll('.voting-option').forEach(opt => { // 获取所有选项
+                    opt.classList.remove('border-primary', 'bg-primary/5'); // 移除选中样式
+                    opt.classList.add('border-gray-200', 'bg-gray-50'); // 添加默认样式
+                });
+                // 为当前选项添加选中状态
+                this.classList.add('border-primary', 'bg-primary/5'); // 添加选中样式
+                this.classList.remove('border-gray-200', 'bg-gray-50'); // 移除默认样式
+
+                // 记录选中的选项
+                window.selectedVotingOption = this.getAttribute('data-option'); // 存储选中的选项
+            });
+        });
+
+        // 投票按钮点击事件
+        document.getElementById('vote-button').addEventListener('click', function() { // 点击事件
+            if (!window.selectedVotingOption) { // 如果没有选择选项
+                alert('请先选择一个观点'); // 提示
+                return; // 结束函数
+            }
+
+            // 显示投票结果
+            document.getElementById('voting-result').classList.remove('hidden'); // 显示结果区域
+        });
+
+        // 查看结果按钮点击事件
+        document.getElementById('view-results-button').addEventListener('click', function() { // 点击事件
+            // 这里可以跳转到结果页面或显示更详细的结果
+            alert('查看实时投票结果'); // 提示
+        });
+
+        // 照片上传区域点击事件
+        document.getElementById('photo-upload-area').addEventListener('click', function() { // 点击事件
+            document.getElementById('photo-upload').click(); // 触发文件选择
+        });
+
+        // 照片上传变化事件
+        document.getElementById('photo-upload').addEventListener('change', function() { // 变化事件
+            if (this.files.length > 0) { // 如果有文件
+                const file = this.files[0]; // 获取第一个文件
+                // 检查文件类型和大小
+                if (!file.type.match('image/jpeg') && !file.type.match('image/png')) { // 如果不是jpg或png
+                    alert('请上传JPG或PNG格式的图片'); // 提示
+                    this.value = ''; // 清空文件选择
+                    return; // 结束函数
+                }
+                if (file.size > 5 * 1024 * 1024) { // 如果大于5MB
+                    alert('图片大小不能超过5MB'); // 提示
+                    this.value = ''; // 清空文件选择
+                    return; // 结束函数
+                }
+                // 显示上传的图片名称
+                document.querySelector('#photo-upload-area p:first-of-type').textContent = `已选择文件: ${file.name}`; // 显示文件名
+                document.querySelector('#photo-upload-area i').classList.remove('fa-cloud-upload-alt'); // 移除上传图标
+                document.querySelector('#photo-upload-area i').classList.add('fa-check-circle', 'text-success'); // 添加成功图标
+            }
+        });
+    </script>
+</body>
+</html>
